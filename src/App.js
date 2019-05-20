@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import './App.css';
 import { getHalls } from "./redux/actions/halls";
 import { getTickets } from "./redux/actions/tickets";
-import {API_HOST} from "./config";
+import { API_HOST } from "./config";
+import Header from "./components/Header/Header"
 
 
 class App extends Component {
@@ -15,7 +16,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-
+        <Header />
       </div>
     );
   }
