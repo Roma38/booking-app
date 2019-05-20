@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
+import { Route, Switch } from "react-router-dom";
 import './App.css';
 import { getHalls } from "./redux/actions/halls";
 import { getTickets } from "./redux/actions/tickets";
 import { API_HOST } from "./config";
+
+import { Container } from 'semantic-ui-react'
 import Header from "./components/Header/Header"
+import SideBar from "./components/SideBar/SideBar"
+import HallsPage from "./components/HallsPage/HallsPage"
 
 
 class App extends Component {
@@ -15,9 +20,16 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <Container>
         <Header />
-      </div>
+        <div className="wrapper">
+          <SideBar />          
+          <Switch>
+            <Route exact path="/" component={HallsPage} />
+            <Route path="/halls" component={HallsPage} />
+          </Switch>
+        </div>
+      </Container>
     );
   }
 }
