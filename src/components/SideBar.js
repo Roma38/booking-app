@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'semantic-ui-react'
+//import { Button } from 'semantic-ui-react'
 import { connect } from "react-redux";
 import "./SideBar.css"
 import { List } from 'semantic-ui-react'

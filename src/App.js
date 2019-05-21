@@ -7,9 +7,12 @@ import { getTickets } from "./redux/actions/tickets";
 import { API_HOST } from "./config";
 
 import { Container } from 'semantic-ui-react'
-import Header from "./components/Header/Header"
-import SideBar from "./components/SideBar/SideBar"
-import HallsPage from "./components/HallsPage/HallsPage"
+import Header from "./components/Header"
+import SideBar from "./components/SideBar"
+import HallsPage from "./components/HallsPage"
+import Calendar from "./components/Calendar"
+import RegisterPage from "./components/RegisterPage"
+import LoginPage from "./components/LoginPage"
 
 
 class App extends Component {
@@ -23,10 +26,13 @@ class App extends Component {
       <Container>
         <Header />
         <div className="wrapper">
-          <SideBar />          
+          <SideBar />
           <Switch>
             <Route exact path="/" component={HallsPage} />
             <Route path="/halls" component={HallsPage} />
+            <Route path="/hall/:id" component={Calendar} />
+            <Route path="/register" component={RegisterPage} />
+            <Route path="/login" component={LoginPage} />
           </Switch>
         </div>
       </Container>

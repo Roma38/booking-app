@@ -1,4 +1,6 @@
 import axios from "axios";
+import { API_HOST } from "../../config";
+
 export const AUTH_REQUESTED = "AUTH_REQUESTED";
 export const AUTH_SUCCEED = "AUTH_SUCCEED";
 export const AUTH_FAILED = "AUTH_FAILED";
@@ -7,24 +9,13 @@ export const REGISTER_SUCCEED = "REGISTER_SUCCEED";
 export const REGISTER_FAILED = "REGISTER_FAILED";
 export const LOG_OUT = "LOG_OUT";
 
-export const registerRequested = (email, password, isAdmin = false) => ({
-  type: REGISTER_REQUESTED,
-  payload: { email, password, isAdmin }
+export const authRequested = () => ({
+  type: AUTH_REQUESTED,
 });
 
-export const registerSucceed = (email, id) => ({
-  type: REGISTER_REQUESTED,
-  payload: { email, id }
-});
-
-export const registerFailed = error => ({
-  type: REGISTER_REQUESTED,
-  payload: { error }
-});
-
-export const authSucceed = (userName, token) => ({
+export const authSucceed = payload => ({
   type: AUTH_SUCCEED,
-  payload: { userName, token }
+  payload
 });
 
 export const authFailed = error => ({
@@ -36,10 +27,19 @@ export const logOut = () => ({
   type: LOG_OUT
 });
 
-export const register = (url, email, password) => dispatch => {
-  dispatch(registerRequested(email, password));
-  axios
-    .post(url, email, password)
-    .then(({ data }) => dispatch(registerSucceed(data.results)))
-    .catch(() => dispatch(registerFailed()));
+export const register = data => dispatch => axios({
+  method: 'post',
+  url: `${API_HOST}:4000/signUp`,
+  data
+}).then(({ data }) => console.log(data))
+  .catch(error => dispatch(authFailed(error.response.data.errors.message)));
+
+export const login = ({ email, password }) => dispatch => {
+  dispatch(authRequested());
+  axios({
+    method: 'post',
+    url: `${API_HOST}:4000/signIn`,
+    data: { email, password }
+  }).then(({ data }) => dispatch(authSucceed({ ...data, email })))
+    .catch(error => dispatch(authFailed(error.response.data.message)));
 };

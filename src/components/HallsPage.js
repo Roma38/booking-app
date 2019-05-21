@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 //import './HallsPage.css';
 
-import { Button, Card, Image } from 'semantic-ui-react'
+import {  Card } from 'semantic-ui-react'
 
 class HallsPage extends Component {
   render() {

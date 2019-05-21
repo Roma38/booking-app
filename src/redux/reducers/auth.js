@@ -7,28 +7,24 @@ import {
 
 const initialState = {
   authState: "unauthorized",
-  user_id: null,
+  _id: null,
   email: null,
-  token: null
+  token: null,
+  authError: null
 };
 
 export const authReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case AUTH_REQUESTED:
-      return { ...state, authLoading: true, authError: null };
+      return { ...initialState, authState: "loading" };
     case AUTH_SUCCEED:
-      return {
-        ...state,
-        authLoading: false,
-        loggedIn: true,
-        email: payload.email,
-        token: payload.token,
-        authError: null
-      };
+      console.log("LVGYSFU")
+      const { _id, email, token } = payload;
+      return { authState: "logedIn", _id, email, token, authError: null };
     case AUTH_FAILED:
-      return { ...state, authError: payload };
+      return { ...initialState, authError: payload };
     case LOG_OUT:
-      return { ...state, loggedIn: false, email: null, token: null };
+      return { ...initialState };
 
     default:
       return state;
