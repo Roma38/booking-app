@@ -1,19 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Route, Switch } from "react-router-dom";
-import './App.css';
+import "./App.css";
 import { getHalls } from "./redux/actions/halls";
 import { getTickets } from "./redux/actions/tickets";
 import { API_HOST } from "./config";
 
-import { Container } from 'semantic-ui-react'
-import Header from "./components/Header"
-import SideBar from "./components/SideBar"
-import HallsPage from "./components/HallsPage"
-import Calendar from "./components/Calendar"
-import RegisterPage from "./components/RegisterPage"
-import LoginPage from "./components/LoginPage"
-
+import { Container } from "semantic-ui-react";
+import Header from "./components/Header";
+import SideBar from "./components/SideBar";
+import HallsPage from "./components/HallsPage";
+import Calendar from "./components/Calendar";
+import RegisterPage from "./components/RegisterPage";
+import LoginPage from "./components/LoginPage";
 
 class App extends Component {
   componentDidMount() {

@@ -18,7 +18,6 @@ export const authReducer = (state = initialState, { type, payload }) => {
     case AUTH_REQUESTED:
       return { ...initialState, authState: "loading" };
     case AUTH_SUCCEED:
-      console.log("LVGYSFU")
       const { _id, email, token } = payload;
       return { authState: "logedIn", _id, email, token, authError: null };
     case AUTH_FAILED:
