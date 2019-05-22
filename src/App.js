@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import "./App.css";
 import { getHalls } from "./redux/actions/halls";
 import { getTickets } from "./redux/actions/tickets";
+import { authSucceed } from "./redux/actions/auth";
 import { API_HOST } from "./config";
 
 import { Container } from "semantic-ui-react";
@@ -18,6 +19,9 @@ class App extends Component {
   componentDidMount() {
     this.props.getHalls(`${API_HOST}:4000/halls`);
     this.props.getTickets(`${API_HOST}:4000/tickets`);
+    localStorage.getItem('_id') 
+    && localStorage.getItem('token') 
+    && this.props.authSucceed(localStorage.getItem('_id'), localStorage.getItem('email'), localStorage.getItem('tokenI'));
   }
 
   render() {
@@ -43,7 +47,8 @@ const mapStateToProps = ({ halls, tickets }) => ({ halls, tickets });
 
 const mapDispatchToProps = dispatch => ({
   getHalls: url => dispatch(getHalls(url)),
-  getTickets: url => dispatch(getTickets(url))
+  getTickets: url => dispatch(getTickets(url)),
+  authSucceed: payload => dispatch(authSucceed(payload))
 });
 
 App = connect(

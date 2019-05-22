@@ -3,17 +3,18 @@ import { Field, reduxForm } from 'redux-form';
 import axios from "axios";
 import { connect } from "react-redux";
 import { register } from "../redux/actions/auth";
-
-//import { Button, Card, Image } from 'semantic-ui-react'
+import { Button, Form, Message } from 'semantic-ui-react';
+import "./AuthForm.css";
+import { ReduxFormInput, required, minLength, email} from "../ReduxFormConstants";
 
 class RegisterPage extends Component {
   render() {
     return (
-      <form onSubmit={this.props.handleSubmit(this.props.register)}>
-        <Field name="email" component="input" type="email" />
-        <Field name="password" component="input" type="password" />
-        <button type="submit">Submit</button>
-      </form>
+      <Form loading={this.props.submitting} onSubmit={this.props.handleSubmit(this.props.register)} className="auth-form">
+        <Field name="email" component={ReduxFormInput} validate={[required, email]} />
+        <Field name="password" component={ReduxFormInput} validate={[required, minLength]} />
+        <Button type="submit">Submit</Button>
+      </Form>
     );
   }
 }

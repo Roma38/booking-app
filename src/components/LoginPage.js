@@ -2,17 +2,20 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from "react-redux";
 import { login } from "../redux/actions/auth";
+import { Button, Form } from 'semantic-ui-react';
+import "./AuthForm.css";
+import { ReduxFormInput, required, minLength, email} from "../ReduxFormConstants";
 
 //import { Button, Card, Image } from 'semantic-ui-react'
 
 class LoginPage extends Component {
   render() {
     return (
-      <form onSubmit={this.props.handleSubmit(this.props.login)}>
-        <Field name="email" component="input" type="email" />
-        <Field name="password" component="input" type="password" />
-        <button type="submit">Submit</button>
-      </form>
+      <Form loading={this.props.submitting} onSubmit={this.props.handleSubmit(this.props.login)} className="auth-form">
+        <Field name="email" component={ReduxFormInput} validate={[required, email]} />
+        <Field name="password" component={ReduxFormInput} validate={[required, minLength]} />
+        <Button type="submit">Submit</Button>
+      </Form>
     );
   }
 }
