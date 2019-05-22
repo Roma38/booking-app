@@ -1,7 +1,8 @@
-import React from "react";
+import React, { Component } from "react";
 import BigCalendar from "react-big-calendar";
 import moment from "moment";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom"
 import "../../node_modules/react-big-calendar/lib/css/react-big-calendar.css";
 
 // Setup the localizer by providing the moment (or globalize) Object
@@ -11,19 +12,36 @@ const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 const ticketToEvent = tickets =>
   tickets.map(({ title, from, to }) => ({ title, start: new Date(from), end: new Date(to) }));
 
-const CalendarComponent = props => (
-  <div className="big-calendar-container" style={{minHeight: "700px"}}>
-    <BigCalendar
-      localizer={localizer}
-      events={ticketToEvent(props.tickets.items)}
-      startAccessor="start"
-      endAccessor="end"
-    />
-  </div>
-);
+const filterTickets = (tickets, hall_id) => tickets.filter(ticket => ticket.hall_id === hall_id)
+class Calendar extends Component {
+  createEvent = ({ start, end }) => {
+    const title = window.prompt('New Event name');
+    if (title) console.log(title);
+  };
 
-const mapStateToProps = ({ tickets }) => ({ tickets });
+  render() {
+    const { auth, tickets, match } = this.props;
 
-const Calendar = connect(mapStateToProps)(CalendarComponent);
+    return (
+      <div className="big-calendar-container" style={{ minHeight: "700px" }}>
+        <BigCalendar
+          selectable={auth.authState === "logedIn"}
+          onSelectEvent={event => alert(`${event.title}
+          from ${moment(event.start).format("MMMM Do h:mm a")} to ${moment(event.end).format("MMMM Do h:mm a")}`)}
+          onSelectSlot={this.createEvent}
+          localizer={localizer}
+          events={ticketToEvent(filterTickets(tickets.items, match.params.id))}
+          startAccessor="start"
+          endAccessor="end"
+        />
+      </div>
+    );
+  }
+};
+
+const mapStateToProps = ({ tickets, auth }) => ({ tickets, auth });
+
+Calendar = connect(mapStateToProps)(Calendar);
+Calendar = withRouter(Calendar)
 
 export default Calendar;

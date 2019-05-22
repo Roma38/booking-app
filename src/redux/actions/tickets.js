@@ -1,4 +1,6 @@
 import axios from "axios";
+import { API_HOST } from "../../config";
+
 export const TICKETS_LOADING = "TICKETS_LOADING";
 export const TICKETS_LOAD_SUCCEED = "TICKETS_LOAD_SUCCEED";
 export const TICKETS_LOAD_FAILED = "TICKETS_LOAD_FAILED";
@@ -15,10 +17,14 @@ export const ticketsLoadFailed = error => ({
   payload: error
 });
 
-export const getTickets = url => dispatch => {
+export const getTickets = () => dispatch => {
   dispatch(ticketsLoadStart());
   axios
-    .get(url)
+    .get(`${API_HOST}:4000/tickets`)
     .then(({ data }) => dispatch(ticketsLoadSucceed(data)))
     .catch(error => dispatch(ticketsLoadFailed(error)));
 };
+
+// export const createTicket = () => dispatch => {
+
+// }

@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import { Button } from 'semantic-ui-react'
+import { Button, Header } from 'semantic-ui-react'
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { logOut } from "../redux/actions/auth"
 import './Header.css';
 
-class Header extends Component {
+class HeaderComponent extends Component {
   render() {
     const { authState } = this.props.auth
     return (
       <header className="header">
-        <h1>CubeX Hotel</h1>
+        <Header as='h1'>CubeX Hotel</Header>
         {authState === "unauthorized" && <Button.Group>
           <Button as={Link} to="/register">Register</Button>
           <Button.Or text='or' />
@@ -33,9 +33,9 @@ const mapDispatchToProps = dispatch => ({
   logOut: () => dispatch(logOut())
 });
 
-Header = connect(
+HeaderComponent = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Header);
+)(HeaderComponent);
 
-export default Header;
+export default HeaderComponent;

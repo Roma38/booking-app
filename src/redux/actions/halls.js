@@ -1,4 +1,6 @@
 import axios from "axios";
+import { API_HOST } from "../../config";
+
 export const HALLS_LOADING = "HALLS_LOADING";
 export const HALLS_LOAD_SUCCEED = "HALLS_LOAD_SUCCEED";
 export const HALLS_LOAD_FAILED = "HALLS_LOAD_FAILED";
@@ -15,10 +17,10 @@ export const hallsLoadFailed = error => ({
   payload: error
 });
 
-export const getHalls = url => dispatch => {
+export const getHalls = () => dispatch => {
   dispatch(hallsLoadStart());
   axios
-    .get(url)
+    .get(`${API_HOST}:4000/halls`)
     .then(({ data }) => dispatch(hallsLoadSucceed(data)))
     .catch(error => dispatch(hallsLoadFailed(error)));
 };

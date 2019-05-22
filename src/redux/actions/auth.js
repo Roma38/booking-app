@@ -1,4 +1,5 @@
 import axios from "axios";
+import { push } from 'connected-react-router'
 import { API_HOST } from "../../config";
 
 export const AUTH_REQUESTED = "AUTH_REQUESTED";
@@ -31,7 +32,7 @@ export const register = data => dispatch => axios({
   method: 'post',
   url: `${API_HOST}:4000/signUp`,
   data
-}).then(({ data }) => console.log(data))
+}).then(({ data }) => dispatch(push('/login')))
   .catch(error => dispatch(authFailed(error.response.data.errors.message)));
 
 export const login = ({ email, password }) => dispatch => {
@@ -40,6 +41,9 @@ export const login = ({ email, password }) => dispatch => {
     method: 'post',
     url: `${API_HOST}:4000/signIn`,
     data: { email, password }
-  }).then(({ data }) => dispatch(authSucceed({ ...data, email })))
+  }).then(({ data }) => {
+    dispatch(push('/halls'));
+    dispatch(authSucceed({ ...data, email }));
+  })
     .catch(error => dispatch(authFailed(error.response.data.message)));
 };

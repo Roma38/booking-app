@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import "./App.css";
 import { getHalls } from "./redux/actions/halls";
 import { getTickets } from "./redux/actions/tickets";
@@ -8,7 +8,7 @@ import { authSucceed } from "./redux/actions/auth";
 import { API_HOST } from "./config";
 
 import { Container } from "semantic-ui-react";
-import Header from "./components/Header";
+import HeaderComponent from "./components/HeaderComponent";
 import SideBar from "./components/SideBar";
 import HallsPage from "./components/HallsPage";
 import Calendar from "./components/Calendar";
@@ -17,21 +17,21 @@ import LoginPage from "./components/LoginPage";
 
 class App extends Component {
   componentDidMount() {
-    this.props.getHalls(`${API_HOST}:4000/halls`);
-    this.props.getTickets(`${API_HOST}:4000/tickets`);
-    localStorage.getItem('_id') 
-    && localStorage.getItem('token') 
-    && this.props.authSucceed(localStorage.getItem('_id'), localStorage.getItem('email'), localStorage.getItem('tokenI'));
+    this.props.getHalls();
+    this.props.getTickets();
+    localStorage.getItem('_id')
+      && localStorage.getItem('token')
+      && this.props.authSucceed(localStorage.getItem('_id'), localStorage.getItem('email'), localStorage.getItem('tokenI'));
   }
 
   render() {
     return (
       <Container>
-        <Header />
+        <HeaderComponent />
         <div className="wrapper">
           <SideBar />
           <Switch>
-            <Route exact path="/" component={HallsPage} />
+            <Route exact path="/" render={() => <Redirect to="/halls" />} />
             <Route path="/halls" component={HallsPage} />
             <Route path="/hall/:id" component={Calendar} />
             <Route path="/register" component={RegisterPage} />
