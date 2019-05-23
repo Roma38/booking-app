@@ -19,9 +19,11 @@ class App extends Component {
   componentDidMount() {
     this.props.getHalls();
     this.props.getTickets();
-    localStorage.getItem('_id')
-      && localStorage.getItem('token')
-      && this.props.authSucceed(localStorage.getItem('_id'), localStorage.getItem('email'), localStorage.getItem('tokenI'));
+    if (localStorage.getItem('token')) {
+      console.log(localStorage.getItem('token'), "ID******", localStorage.getItem('_id'), localStorage.getItem('email'))
+      this.props.authSucceed({_id: localStorage.getItem('_id'), email: localStorage.getItem('email'), token: localStorage.getItem('token') });
+
+    }
   }
 
   render() {
@@ -46,8 +48,8 @@ class App extends Component {
 const mapStateToProps = ({ halls, tickets }) => ({ halls, tickets });
 
 const mapDispatchToProps = dispatch => ({
-  getHalls: url => dispatch(getHalls(url)),
-  getTickets: url => dispatch(getTickets(url)),
+  getHalls: () => dispatch(getHalls()),
+  getTickets: () => dispatch(getTickets()),
   authSucceed: payload => dispatch(authSucceed(payload))
 });
 

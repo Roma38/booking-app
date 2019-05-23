@@ -21,7 +21,7 @@ class HeaderComponent extends Component {
           <Button.Or text='or' />
           <Button loading>Log In</Button>
         </Button.Group>}
-        {authState === "logedIn" &&
+        {authState === "loggedIn" &&
           <Button onClick={this.props.logOut}>Log Out</Button>}
       </header>
     );

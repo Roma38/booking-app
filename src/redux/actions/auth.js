@@ -42,6 +42,7 @@ export const login = ({ email, password }) => dispatch => {
     url: `${API_HOST}:4000/signIn`,
     data: { email, password }
   }).then(({ data }) => {
+    console.log ({ ...data, email })
     dispatch(push('/halls'));
     dispatch(authSucceed({ ...data, email }));
   })
