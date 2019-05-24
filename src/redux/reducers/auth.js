@@ -10,7 +10,6 @@ const initialState = {
   _id: null,
   email: null,
   token: null,
-  authError: null
 };
 
 export const authReducer = (state = initialState, { type, payload }) => {
@@ -24,7 +23,7 @@ export const authReducer = (state = initialState, { type, payload }) => {
       localStorage.setItem('email', email);
       return { authState: "loggedIn", _id, email, token, authError: null };
     case AUTH_FAILED:
-      return { ...initialState, authError: payload };
+      return { ...initialState };
     case LOG_OUT:
       localStorage.clear();
       return { ...initialState };

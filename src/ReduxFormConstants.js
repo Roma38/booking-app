@@ -6,13 +6,13 @@ export const ReduxFormInput = ({
   input,
   label,
   type,
-  meta: { touched, error: er }
+  meta: { touched, error}
 }) => {
   return (
     <Form.Field>
       <label>{label}</label>
-      <input {...input} placeholder={label} />
-      {touched && er && <Message content={er} />}
+      <input {...input} placeholder={label} type={type} />
+      {touched && error && <Message content={error} negative /> }
     </Form.Field>
   )
 }

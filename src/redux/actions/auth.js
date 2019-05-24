@@ -1,6 +1,7 @@
 import axios from "axios";
 import { push } from 'connected-react-router'
 import { API_HOST } from "../../config";
+import { openPopup } from "./popup";
 
 export const AUTH_REQUESTED = "AUTH_REQUESTED";
 export const AUTH_SUCCEED = "AUTH_SUCCEED";
@@ -19,9 +20,8 @@ export const authSucceed = payload => ({
   payload
 });
 
-export const authFailed = error => ({
-  type: AUTH_FAILED,
-  payload: error
+export const authFailed = () => ({
+  type: AUTH_FAILED
 });
 
 export const logOut = () => ({
@@ -32,8 +32,20 @@ export const register = data => dispatch => axios({
   method: 'post',
   url: `${API_HOST}:4000/signUp`,
   data
-}).then(({ data }) => dispatch(push('/login')))
-  .catch(error => dispatch(authFailed(error.response.data.errors.message)));
+}).then(() => {
+  dispatch(openPopup({
+    content: `You was successfully registered! Now you can login`,
+    attributes: { positive: true }
+  }))
+  dispatch(push('/login'))
+})
+  .catch(error => {
+    dispatch((openPopup({
+      content: error.response.data.errors ? error.response.data.errors.message : `Ooops, something went wrong :(`,
+      attributes: { negative: true }
+    })))
+    dispatch(authFailed())
+  });
 
 export const login = ({ email, password }) => dispatch => {
   dispatch(authRequested());
@@ -42,9 +54,18 @@ export const login = ({ email, password }) => dispatch => {
     url: `${API_HOST}:4000/signIn`,
     data: { email, password }
   }).then(({ data }) => {
-    console.log ({ ...data, email })
+    dispatch(openPopup({
+      content: `You was successfully logged in`,
+      attributes: { positive: true }
+    }))
     dispatch(push('/halls'));
     dispatch(authSucceed({ ...data, email }));
   })
-    .catch(error => dispatch(authFailed(error.response.data.message)));
+    .catch(error => {
+      dispatch((openPopup({
+        content: error.response.data.message ? error.response.data.message : `Ooops, something went wrong :(`,
+        attributes: { negative: true }
+      })))
+      dispatch(authFailed())
+    });
 };

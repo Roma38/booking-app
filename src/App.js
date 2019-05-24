@@ -5,7 +5,6 @@ import "./App.css";
 import { getHalls } from "./redux/actions/halls";
 import { getTickets } from "./redux/actions/tickets";
 import { authSucceed } from "./redux/actions/auth";
-import { API_HOST } from "./config";
 
 import { Container } from "semantic-ui-react";
 import HeaderComponent from "./components/HeaderComponent";
@@ -20,7 +19,6 @@ class App extends Component {
     this.props.getHalls();
     this.props.getTickets();
     if (localStorage.getItem('token')) {
-      console.log(localStorage.getItem('token'), "ID******", localStorage.getItem('_id'), localStorage.getItem('email'))
       this.props.authSucceed({_id: localStorage.getItem('_id'), email: localStorage.getItem('email'), token: localStorage.getItem('token') });
 
     }

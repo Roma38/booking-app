@@ -2,4 +2,12 @@
   display: flex;
   justify-content: space-between;
   padding: 10px;
+  position: relative;
+}
+
+.ui.message.popup-message {
+  right: 0px;
+  top: 15px;
+  z-index: 3;
+  position: absolute;
 }

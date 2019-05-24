@@ -14,7 +14,7 @@ class LoginPage extends Component {
       <Form loading={this.props.submitting} onSubmit={this.props.handleSubmit(this.props.login)} className="auth-form">
         <Header as="h1">Login</Header>
         <Field name="email" component={ReduxFormInput} validate={[required, email]} />
-        <Field name="password" component={ReduxFormInput} validate={[required, minLength]} />
+        <Field name="password" component={ReduxFormInput} validate={[required, minLength]} type="password" />
         <Button type="submit">Submit</Button>
       </Form>
     );

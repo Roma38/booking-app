@@ -5,6 +5,7 @@ import { reducer as formReducer } from 'redux-form'
 import { authReducer } from "./auth";
 import { hallsReduser } from "./halls";
 import { ticketsReduser } from "./tickets";
+import { popupReduser } from "./popup";
 
 export const createRootReducer = (history) => {
   return combineReducers({
@@ -12,6 +13,7 @@ export const createRootReducer = (history) => {
     router: connectRouter(history),
     auth: authReducer,
     halls: hallsReduser,
-    tickets: ticketsReduser
+    tickets: ticketsReduser,
+    popup: popupReduser
   })
 };

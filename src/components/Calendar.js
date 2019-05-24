@@ -23,9 +23,9 @@ class Calendar extends Component {
     isModalOpened: false,
     editingTicket: {}
   }
+
   createEvent = ({ start, end }) => {
     const title = window.prompt('New Event name');
-    console.log(Date.parse(start), Date.parse(end))
     if (title)
       axios({
         method: 'post',
@@ -33,7 +33,6 @@ class Calendar extends Component {
         headers: { Authorization: this.props.auth.token },
         data: { from: Date.parse(start), to: Date.parse(end), title, hall_id: this.props.match.params.id, user_id: this.props.auth._id }
       }).then(({ data }) => {
-        console.log(data);
         this.props.getTickets()
       })
         .catch(error => {
@@ -47,8 +46,8 @@ class Calendar extends Component {
   }
 
   editTicket = editingTicket => {
-    editingTicket.start = moment(editingTicket.start).format("YYYY-MM-DD H:mm");
-    editingTicket.end = moment(editingTicket.end).format("YYYY-MM-DD H:mm")
+    editingTicket.start = moment(editingTicket.start).format("DD-MM-YYYY H:mm");
+    editingTicket.end = moment(editingTicket.end).format("DD-MM-YYYY H:mm")
     this.setState({ isModalOpened: true, editingTicket })
   }
 
@@ -56,11 +55,39 @@ class Calendar extends Component {
     this.setState({ editingTicket: { ...this.state.editingTicket, [name]: value } })
   }
 
-  handleDateChange = (event, {name, value}) => {
-    console.log("XYN")
-    // if (this.state.hasOwnProperty(name)) {
-      this.setState({ editingTicket: { ...this.state.editingTicket, [name]: value } })
-    // }
+  handleDateChange = (event, { name, value }) => {
+    this.setState({ editingTicket: { ...this.state.editingTicket, [name]: value } })
+  }
+
+  sendChanges = () => {
+    const { _id, start, end, title } = this.state.editingTicket
+    axios({
+      method: 'put',
+      url: `${API_HOST}:4000/ticket/${_id}`,
+      headers: { Authorization: this.props.auth.token },
+      data: { from: moment(start, "DD-MM-YYYY H:mm").unix() * 1000, to: moment(end, "DD-MM-YYYY H:mm").unix() * 1000, title }
+    }).then(({ data }) => {
+      this.props.getTickets();
+    })
+      .catch(error => {
+        console.log(error.response);
+      });
+  }
+
+  removeTicket = () => {
+    if (window.confirm("Are you sure want to cancel booking??"))
+      axios({
+        method: 'delete',
+        url: `${API_HOST}:4000/tickets/${this.state.editingTicket._id}`,
+        headers: { Authorization: this.props.auth.token },
+      }).then(({ data }) => {
+        console.log(data);
+        this.props.getTickets();
+        this.setState({ isModalOpened: false });
+      })
+        .catch(error => {
+          console.log(error.response);
+        });
   }
 
   render() {
@@ -89,7 +116,7 @@ class Calendar extends Component {
               <Form.Field>
                 <DateTimeInput
                   name="start"
-                  value={moment(this.state.editingTicket.start).format("YYYY-MM-DD H:mm")}
+                  value={this.state.editingTicket.start}
                   iconPosition="left"
                   onChange={this.handleDateChange}
                 />
@@ -97,21 +124,20 @@ class Calendar extends Component {
               <Form.Field>
                 <DateTimeInput
                   name="end"
-                  value={moment(this.state.editingTicket.end).format("YYYY-MM-DD H:mm")}
+                  value={this.state.editingTicket.end}
                   iconPosition="left"
                   onChange={this.handleDateChange}
                 />
               </Form.Field>
-              <Button type='submit'>Submit</Button>
+              <Button type='submit' onClick={this.sendChanges}>Save changes</Button>
             </Form>
           </Modal.Content>
           <Modal.Actions>
-            <Button color='red'>
-              <Icon name='remove' /> No
+            <Button color='red' onClick={this.removeTicket}>
+              <Icon name='remove' /> Cancel booking
            </Button>
-            <Button color='green'>
-              <Icon name='checkmark' /> Yes
-          </Button>
+            <Button onClick={() => this.setState({ isModalOpened: false })}>Close
+            </Button>
           </Modal.Actions>
         </Modal>
       </div>
