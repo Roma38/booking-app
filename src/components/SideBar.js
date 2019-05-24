@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import "./SideBar.css"
 import { List } from 'semantic-ui-react'
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 
 
@@ -13,9 +13,9 @@ class SideBar extends Component {
     return (
       <nav className="side-bar">
         <List link>
-          <List.Header as={Link} to="/halls">Halls</List.Header>
+          <List.Header as={NavLink} to="/halls">Halls</List.Header>
           {halls.map(hall =>
-            (<List.Item as={Link} key={hall._id} to={`/hall/${hall._id}`}>{hall.title}</List.Item>)
+            (<List.Item as={NavLink} activeStyle={{ fontWeight: "bold" }} key={hall._id} to={`/hall/${hall._id}`}>{hall.title}</List.Item>)
           )}
         </List>
       </nav>
