@@ -1,5 +1,6 @@
 import axios from "axios";
 import { API_HOST } from "../../config";
+import {openPopup} from "./popup";
 
 export const HALLS_LOADING = "HALLS_LOADING";
 export const HALLS_LOAD_SUCCEED = "HALLS_LOAD_SUCCEED";
@@ -20,7 +21,12 @@ export const hallsLoadFailed = error => ({
 export const getHalls = () => dispatch => {
   dispatch(hallsLoadStart());
   axios
-    .get(`${API_HOST}:4000/halls`)
+    .get(`${API_HOST}/halls`)
     .then(({ data }) => dispatch(hallsLoadSucceed(data)))
-    .catch(error => dispatch(hallsLoadFailed(error)));
+    .catch(error => {
+      dispatch((openPopup({
+        content: `Ooops, something went wrong :(. Can't load data from server`,
+        attributes: { negative: true }
+      })))
+      dispatch(hallsLoadFailed(error))});
 };

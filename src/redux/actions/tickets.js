@@ -20,7 +20,7 @@ export const ticketsLoadFailed = error => ({
 export const getTickets = () => dispatch => {
   dispatch(ticketsLoadStart());
   axios
-    .get(`${API_HOST}:4000/tickets`)
+    .get(`${API_HOST}/tickets`)
     .then(({ data }) => dispatch(ticketsLoadSucceed(data)))
     .catch(error => dispatch(ticketsLoadFailed(error)));
 };

@@ -30,7 +30,7 @@ export const logOut = () => ({
 
 export const register = data => dispatch => axios({
   method: 'post',
-  url: `${API_HOST}:4000/signUp`,
+  url: `${API_HOST}/signUp`,
   data
 }).then(() => {
   dispatch(openPopup({
@@ -51,7 +51,7 @@ export const login = ({ email, password }) => dispatch => {
   dispatch(authRequested());
   axios({
     method: 'post',
-    url: `${API_HOST}:4000/signIn`,
+    url: `${API_HOST}/signIn`,
     data: { email, password }
   }).then(({ data }) => {
     dispatch(openPopup({
