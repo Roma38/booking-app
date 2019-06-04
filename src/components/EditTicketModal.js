@@ -28,7 +28,7 @@ export default function EditTicketModal(props) {
               onChange={props.handleDateChange}
             />
           </Form.Field>
-          <Button type='submit' onClick={props.sendChanges}>Save changes</Button>
+          <Button type='submit' onClick={props.sendChanges} data-hook="save-changes-button">Save changes</Button>
         </Form>
       </Modal.Content>
       <Modal.Actions>
